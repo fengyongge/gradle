@@ -1,0 +1,47 @@
+apply plugin: 'findbugs'
+
+//def configDir = "${project.rootDir}/config"
+//def reportsDir = "${project.buildDir}/reports"
+
+ext{
+    configDir = "${project.rootDir}/config";
+    buildDirs = "${buildDir}";
+}
+
+
+
+//task findbugs(type: FindBugs, dependsOn: "assembleDebug") {
+task findbugs(type: FindBugs) {
+
+    group 'devqa'
+
+    ignoreFailures = true
+    reportLevel = "high"
+    effort = "max"
+
+//    excludeFilter = new File(configDir+"/findbugs/findbugs-filter.xml")
+    print("-----excludeFilter 路径:-----"+configDir+"/findbugs/findbugs-filter.xml")
+    classes = files(buildDirs+"/intermediates/classes")
+    print("-----classes 路径:"+buildDirs+"/intermediates/classes\n")
+
+
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+//        xml {
+//            destination "$reportsDir/findbugs/findbugs.xml"
+//        }
+//        html {
+//            destination "$reportsDir/findbugs/findbugs.html"
+//        }
+    }
+
+    classpath = files()
+}
+
+
+
